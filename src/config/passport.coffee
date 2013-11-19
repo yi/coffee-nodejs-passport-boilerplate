@@ -17,19 +17,20 @@ module.exports = (passport, config)->
   passport.deserializeUser (id, done)->
     User.findOne({ _id: id }, (err, user)-> done(err, user))
 
-
-  callbackUserFindOne = (err, user)->
-    return done(err) if (err)
-    return done(null, false, { message: 'Unknown user' }) unless user
-    return done(null, false, { message: 'Invalid password' }) unless user.authenticate(password)
-    return done(null, user)
-
   # use local strategy
-  localStrategy = new LocalStrategy
+  localStrategyConfig =
     usernameField: 'email',
     passwordField: 'password'
 
-  passport.use localStrategy, (email, password, done)-> User.findOne({ email: email }, callbackUserFindOne)
+  localStrategyCallback = (email, password, done)->
+    User.findOne { email: email }, (err, user)->
+      return done(err) if (err)
+      return done(null, false, { message: 'Unknown user' }) unless user
+      return done(null, false, { message: 'Invalid password' }) unless user.authenticate(password)
+      return done(null, user)
+    return
+
+  passport.use new LocalStrategy localStrategyConfig, localStrategyCallback
 
   # use twitter strategy
   #twitterSetting =
@@ -37,12 +38,12 @@ module.exports = (passport, config)->
     #consumerSecret: config.twitter.clientSecret
     #callbackURL: config.twitter.callbackURL
 
-  twitterStrategy = new TwitterStrategy
+  twitterStrategyConfig =
     consumerKey: config.twitter.clientID
     consumerSecret: config.twitter.clientSecret
     callbackURL: config.twitter.callbackURL
 
-  passport.use twitterStrategy, (token, tokenSecret, profile, done)->
+  twitterStrategyCallback = (token, tokenSecret, profile, done)->
     User.findOne {'twitter.id': profile.id }, (err, user)->
       return done(err) if err
       unless user
@@ -59,6 +60,8 @@ module.exports = (passport, config)->
         return done(err, user)
       return
     return
+
+  passport.use new TwitterStrategy twitterStrategyConfig, twitterStrategyCallback
 
   # use facebook strategy
   facebookStrategy = new FacebookStrategy

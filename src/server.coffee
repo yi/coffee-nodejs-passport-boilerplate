@@ -24,7 +24,7 @@ mongoose = require('mongoose')
 mongoose.connect(config.db)
 
 # Bootstrap models
-models_path = __dirname + '/app/models'
+models_path = __dirname + '/models'
 fs.readdirSync(models_path).forEach (file)-> require(models_path+'/'+file)
 
 # bootstrap passport config
