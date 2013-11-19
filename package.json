@@ -5,10 +5,11 @@
   "private": false,
   "author": "Mustafa Dikici <musdikici@gmail.com> (http://diki.io)",
   "engines": {
-    "node": "0.10.x",
+    "node": "0.8.x",
     "npm": "1.2.x"
   },
   "scripts": {
+    "watch" : "coffee -o ./lib/ -cw ./src/",
     "start": "NODE_ENV=development ./node_modules/.bin/nodemon server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/test-*.js"
   },
@@ -27,13 +28,18 @@
     "underscore": "latest",
     "gzippo": "latest",
     "async": "latest",
-    "view-helpers": "latest",
-    "forever": "latest"
+    "view-helpers": "latest"
   },
   "devDependencies": {
     "supertest": "latest",
     "should": "latest",
     "mocha": "latest",
     "nodemon": "latest"
-  }
+  },
+  "keywords": [
+    "coffeescript",
+    "passport",
+    "mvc",
+    "boilerplate"
+  ]
 }
