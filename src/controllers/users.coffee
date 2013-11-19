@@ -1,116 +1,89 @@
 
-/**
- * Module dependencies.
- */
+# Module dependencies.
 
-var mongoose = require('mongoose')
-  , User = mongoose.model('User');
+mongoose = require('mongoose')
+User = mongoose.model('User')
 
-exports.signin = function (req, res) {}
+exports.signin = (req, res)->
 
-/**
- * Auth callback
- */
+# Auth callback
+exports.authCallback = (req, res, next)->
+  res.redirect('/')
+  return
 
-exports.authCallback = function (req, res, next) {
-  res.redirect('/');
-}
-
-/**
- * Show login form
- */
-
-exports.login = function (req, res) {
-  res.render('users/login', {
+# Show login form
+exports.login = (req, res)->
+  res.render 'users/login',
     title: 'Login',
     message: req.flash('error')
-  });
-}
+  return
 
-/**
- * Show sign up form
- */
-
-exports.signup = function (req, res) {
-  res.render('users/signup', {
+# Show sign up form
+exports.signup = (req, res)->
+  res.render 'users/signup',
     title: 'Sign up',
     user: new User()
-  });
-}
+  return
 
-/**
- * Logout
- */
+# Logout
+exports.logout = (req, res)->
+  req.logout()
+  res.redirect('/login')
+  return
 
-exports.logout = function (req, res) {
-  req.logout();
-  res.redirect('/login');
-}
+# Session
+exports.session = (req, res)->
+  res.redirect('/')
+  return
 
-/**
- * Session
- */
+# Create user
+exports.create = (req, res)->
+  newUser = new User(req.body)
+  newUser.provider = 'local'
 
-exports.session = function (req, res) {
-  res.redirect('/');
-}
+  User.findOne({ email: newUser.email }).exec (err, user)->
+    return next(err) if err?
+    unless user?
+      newUser.save (err)->
+        if err?
+          res.render 'users/signup',
+            errors: err.errors
+            user:newUser
+          return
 
-/**
- * Create user
- */
+        req.logIn newUser, (err)->
+          return next err if err?
+          return res.redirect('/')
+        return
+    else
+      res.render 'users/signup',
+        errors: [{"type":"email already registered"}]
+        user:newUser
+      return
+    return
+  return
 
-exports.create = function (req, res) {
-  var newUser = new User(req.body);
-  newUser.provider = 'local';
+#  Show profile
+exports.show = (req, res)->
+  User.findOne({ _id : req.params['userId'] }).exec (err, user)->
+    return next(err) if err?
+    return next(new Error('Failed to load User ' + id)) unless user?
 
-  User
-    .findOne({ email: newUser.email })
-    .exec(function(err, user){
-      if(err) return next(err)
-      if(!user){
-        newUser.save(function(err){
-          if (err) return res.render('users/signup', { errors: err.errors, user:newUser });
+    res.render 'users/show',
+      title: user.name,
+      user: user
+    return
+  return
 
-          req.logIn(newUser, function(err) {
-            if (err) return next(err) 
-            return res.redirect('/')
-          })     
-        });
-      } else {
-        return res.render('users/signup', { errors: [{"type":"email already registered"}], user:newUser })
-      }
-    });
-}
+# Find user by id
+exports.user = (req, res, next, id)->
+  User.findOne({ _id : id }).exec (err, user)->
+    return next(err) if err?
+    return next(new Error('Failed to load User ' + id)) unless user?
+    req.profile = user
+    next()
+    return
+  return
 
-/**
- *  Show profile
- */
 
-exports.show = function (req, res) {
-  User
-    .findOne({ _id : req.params['userId'] })
-    .exec(function (err, user) {
-      if (err) return next(err)
-      if (!user) return next(new Error('Failed to load User ' + id))
 
-      res.render('users/show', {
-        title: user.name,
-        user: user
-      })    
-    });  
-}
-
-/**
- * Find user by id
- */
-
-exports.user = function (req, res, next, id) {
-  User
-    .findOne({ _id : id })
-    .exec(function (err, user) {
-      if (err) return next(err)
-      if (!user) return next(new Error('Failed to load User ' + id))
-      req.profile = user
-      next()
-    });
-}

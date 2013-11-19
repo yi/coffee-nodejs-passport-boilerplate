@@ -5,3 +5,5 @@ config/imager.js
 Makefile
 sftp-config.json
 syncAll
+*.swp
+*.swo

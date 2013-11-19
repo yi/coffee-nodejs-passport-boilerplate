@@ -30,7 +30,7 @@ fs.readdirSync(models_path).forEach (file)-> require(models_path+'/'+file)
 # bootstrap passport config
 require('./config/passport')(passport, config)
 
-app = express();
+app = express()
 # express settings
 require('./config/express')(app, config, passport)
 

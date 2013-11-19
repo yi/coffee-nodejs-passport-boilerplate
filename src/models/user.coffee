@@ -67,9 +67,9 @@ UserSchema.path('hashed_password').validate (hashed_password)->
 
 # Pre-save hook
 UserSchema.pre 'save', (next)->
-  if (!@isNew) return next()
+  return next() if (!@isNew)
 
-  if (!validatePresenceOf(this.password) && authTypes.indexOf(this.provider) === -1)
+  if not validatePresenceOf(@password) and authTypes.indexOf(this.provider) is -1
     next(new Error('Invalid password'))
   else
     next()
