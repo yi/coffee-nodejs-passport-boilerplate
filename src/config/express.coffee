@@ -4,6 +4,7 @@ express = require('express')
 mongoStore = require('connect-mongo')(express)
 flash = require('connect-flash')
 helpers = require('view-helpers')
+path = require "path"
 
 module.exports = (app, config, passport)->
 
@@ -21,7 +22,10 @@ module.exports = (app, config, passport)->
     app.use(express.logger('dev'))
 
   # set views path, template engine and default layout
-  app.set('views', config.root + '/app/views')
+  pathToView = path.join config.root, '/views'
+  console.log "[express::main] pathToView:#{pathToView}"
+
+  app.set('views', config.root + '/views')
   app.set('view engine', 'jade')
 
   app.configure ()->

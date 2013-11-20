@@ -1,6 +1,9 @@
 
 path = require('path')
-rootPath = path.normalize(__dirname + '/..')
+rootPath = path.normalize(__dirname + '/../..')
+console.log "[config::rootPath] #{rootPath}"
+
+
 templatePath = path.normalize(__dirname + '/../app/mailer/templates')
 notifier =
   APN: false,

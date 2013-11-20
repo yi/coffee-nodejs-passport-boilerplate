@@ -64,12 +64,12 @@ module.exports = (passport, config)->
   passport.use new TwitterStrategy twitterStrategyConfig, twitterStrategyCallback
 
   # use facebook strategy
-  facebookStrategy = new FacebookStrategy
+  facebookStrategyConfig =
     clientID: config.facebook.clientID
     clientSecret: config.facebook.clientSecret
     callbackURL: config.facebook.callbackURL
 
-  passport.use facebookStrategy, (accessToken, refreshToken, profile, done)->
+  facebookStrategyCallback = (accessToken, refreshToken, profile, done)->
     User.findOne {'facebook.id': profile.id }, (err, user)->
       return done(err) if err
       unless user
@@ -87,13 +87,15 @@ module.exports = (passport, config)->
       return
     return
 
+  passport.use new FacebookStrategy facebookStrategyConfig, facebookStrategyCallback
+
   # use github strategy
-  gitHubStrategy = new GitHubStrategy
+  gitHubStrategyConfig =
     clientID: config.github.clientID
     clientSecret: config.github.clientSecret
     callbackURL: config.github.callbackUR
 
-  passport.use gitHubStrategy, (accessToken, refreshToken, profile, done)->
+  gitHubStrategyCallback = (accessToken, refreshToken, profile, done)->
     User.findOne { 'github.id': profile.id }, (err, user)->
       return done(err) if err
       unless user
@@ -111,13 +113,15 @@ module.exports = (passport, config)->
       return
     return
 
+  passport.use new GitHubStrategy gitHubStrategyConfig, gitHubStrategyCallback
+
   # use google strategy
-  googleStrategy = new GoogleStrategy
+  googleStrategyConfig =
     clientID: config.google.clientID
     clientSecret: config.google.clientSecret
     callbackURL: config.google.callbackURL
 
-  passport.use googleStrategy, (accessToken, refreshToken, profile, done)->
+  googleStrategyCallback = (accessToken, refreshToken, profile, done)->
     User.findOne {'google.id': profile.id}, (err, user)->
       unless user
         # make a new google profile without key start with $
@@ -139,4 +143,7 @@ module.exports = (passport, config)->
         return done(err, user)
       return
     return
+
+  passport.use new GoogleStrategy googleStrategyConfig, googleStrategyCallback
+
 

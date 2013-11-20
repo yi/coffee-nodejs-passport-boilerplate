@@ -24,5 +24,5 @@ module.exports = (app, passport, auth)->
   app.get '/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', successRedirect: '/' })
 
   # this is home page
-  home = require "../app/controllers/home"
+  home = require "../controllers/home"
   app.get '/', home.index
