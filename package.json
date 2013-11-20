@@ -1,9 +1,18 @@
 {
-  "name": "NodeJS-Passort-BoilerPlate",
-  "description": "A demo app in nodejs illustrating the use of passport in express, jade and mongoose environment",
-  "version": "1.0.0",
+  "name": "coffeescript-passport-boilerplate",
+  "description": "A demo app written in coffeescript, run on nodejs illustrating the use of passport in express, jade and mongoose environment",
+  "version": "0.1.0",
   "private": false,
-  "author": "Mustafa Dikici <musdikici@gmail.com> (http://diki.io)",
+  "author": [
+    {
+      "name": "Mustafa Dikici",
+      "email": "musdikici@gmail.com"
+    },
+    {
+      "name": "yi",
+      "email": "yi2004@gmail.com"
+    }
+  ],
   "engines": {
     "node": "0.8.x",
     "npm": "1.2.x"
@@ -40,6 +49,7 @@
     "coffeescript",
     "passport",
     "mvc",
+    "mongoose",
     "boilerplate"
   ]
 }

@@ -27,6 +27,12 @@ Installation
 4. create config.js file under config folder (see config example)
 5. npm start
 
+Start CoffeeScript Compiling
+-------------
+```bash
+npm run-script watch
+```
+
 License
 ------------
 
