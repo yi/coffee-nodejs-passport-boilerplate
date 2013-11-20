@@ -1,9 +1,9 @@
-NodeJS Passport Boilerplate
+CoffeeScript NodeJS Passport MongoDB Boilerplate
 ============
 
 ##[Demo](http://passport.diki.io)
 
-User system in nodejs illustrating the use of **passport** in **express**, **jade** and **mongoose** environment
+User system is writen **CoffeeScript**, run on nodejs illustrating the use of **passport** in **express**, **jade** and **mongoose** environment
 together with front pages for login, signup and profile mock built with Twitter Bootstrap
 
 Includes login with Facebook, Twitter, Github and Google together with Passport LocalStrategy
@@ -13,7 +13,7 @@ Technology
 
 | On The Server | On The Client  |
 | ------------- | -------------- |
-| Express       | Bootstrap 2    |
+| Express       | Bootstrap 3    |
 | Jade          | Backbone.js    |
 | Passport      | jQuery         |
 | Mongoose      | Underscore.js  |
